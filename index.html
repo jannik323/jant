@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>test site 1</title>
+        <meta name="tetris oder so" content="Some testing" author="323j">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    
+<body>
+    
+    
+    
+
+    <div class="all"> 
+    <div class="canvasborder">
+    <canvas id="canvas"></canvas>
+    </div>      
+    
+    <div class="inputs">
+    
+    <div class="group">
+    <label for="Fps">Game Speed</label>
+    <input  name="Fps" type="range" step="1" defaultValue="10" value="10" min="1" max="60" onchange=" if(GameSpeed != 0){GameSpeed = this.value }" >
+    </div>
+    
+    <div class="group">
+        <label for="style">style</label>
+        <input  name="style" type="checkbox"  onchange=" togglestyle() " checked="true" >
+    </div>
+
+    <div class="group">
+        <label for="grid">grid</label>
+        <input  name="grid" type="checkbox"  onchange=" togglegrid() "  >
+    </div>
+
+    <button  onclick=" blocksList=[]; creategrid(false); render();"  > Clear </button>
+    <button  onclick=" blocksList=[]; creategrid(true); render(); "  > Random </button>
+    <button  onclick=" pausegame(); " > Pause </button>
+    </div>
+    </div>
+    <div class="sidebar">
+    
+    <div class="group">
+    <label for="mode" >Choose Mode</label>
+    <select id="mode" onchange="changemode(this);">
+        <option selected >Place</option>
+        <option>Select</option>
+    </select>
+    </div>
+
+
+    <div class="group topmargin" id="inputtype">
+    <label for="types" >Choose cell input type</label>
+    <select id="types" onchange="changeinput(this);">
+    </select>
+    </div>
+
+
+    <div class="group topmargin" id="selecttype">
+    <label for="select" >Choose select type</label>
+    <select id="select" onchange="changeselect(this);">
+        <option selected>Fill</option>
+        <option>Delete</option>
+    </select>
+    <button style="margin-top: 1rem; width:min-content;" onclick="clicks=0;">Cancel</button>
+    </div>
+
+
+    <div id="alert" class="group topmargin"  >
+        placeholder
+    </div>
+
+    <h1 class="pause" >Pause</h1>
+    </div>
+
+     
+    <script src="script.js" ></script>
+</body>
+
+
+</html>
