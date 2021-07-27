@@ -20,7 +20,7 @@ let clicks = 0;
 let dir = [1,0];
 
 let can = document.getElementById("canvas");
-can.width = can.height =6.5*window.innerHeight/10;
+can.width = can.height =7*window.innerHeight/10;
 let scale_divider = window.prompt("grid size?  (please only enter numnbers)",50);
 if (scale_divider === null || scale_divider<0){scale_divider = 50}
 scale_divider = parseInt(scale_divider);
