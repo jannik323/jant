@@ -308,15 +308,7 @@ function pausegame(){
         document.getElementsByClassName("pause")[0].style.display = "none";}
 }
 
-//toggle style
 
-function togglestyle(){
-    if (styleblock === true){
-        styleblock = false ;
-    }else{
-        styleblock = true;}
-
-}
 
 // toggle grid
 
