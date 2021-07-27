@@ -20,7 +20,7 @@ let clicks = 0;
 let dir = [1,0];
 
 let can = document.getElementById("canvas");
-can.width = can.height =7*window.innerHeight/10;
+can.width = can.height =6.5*window.innerHeight/10;
 let scale_divider = window.prompt("grid size?  (please only enter numnbers)",50);
 if (scale_divider === null || scale_divider<0){scale_divider = 50}
 scale_divider = parseInt(scale_divider);
@@ -94,6 +94,7 @@ class block {
         this.y = y;
         this.color = color;
         this.state = 0; 
+        this.dir = [0,1];
         
     }
 
@@ -110,27 +111,34 @@ class block {
 
         if(this.state === 1){
         let checkedcolor; 
-        checkedcolor = this.checkNeigBlock(dir[0],dir[1],i);
+        checkedcolor = this.checkNeigBlock(this.dir[0],this.dir[1],i);
 
-        if(checkedcolor !== "edge"){
-        blocksList[i+dir[0]+(dir[1]*scale_divider)].state = 1;
+        if(checkedcolor !== "edge" && checkedcolor !== "ant" ){
+        blocksList[i+this.dir[0]+(this.dir[1]*scale_divider)].state = 1;
         this.state = 0;}
 
         switch(checkedcolor){
             case "black":
-                blocksList[i+dir[0]+(dir[1]*scale_divider)].color = "white";
-                rotate(1);
+                blocksList[i+this.dir[0]+(this.dir[1]*scale_divider)].color = "white";
+                blocksList[i+this.dir[0]+(this.dir[1]*scale_divider)].dir = this.dir;
+                blocksList[i+this.dir[0]+(this.dir[1]*scale_divider)].rotate(1);
                 break;
 
            case "white":
-               blocksList[i+dir[0]+(dir[1]*scale_divider)].color = "black";
-               rotate(0);
+               blocksList[i+this.dir[0]+(this.dir[1]*scale_divider)].color = "black";
+               blocksList[i+this.dir[0]+(this.dir[1]*scale_divider)].dir = this.dir;
+               blocksList[i+this.dir[0]+(this.dir[1]*scale_divider)].rotate(0);
                break;
+
+
+
+            case "ant":
             case "edge":
-                rotate(0);
-                rotate(0);
-                blocksList[i+dir[0]+(dir[1]*scale_divider)].color = "black";
-                blocksList[i+dir[0]+(dir[1]*scale_divider)].state = 1;
+                this.rotate(0);
+                this.rotate(0);
+                blocksList[i+this.dir[0]+(this.dir[1]*scale_divider)].dir = this.dir;
+                blocksList[i+this.dir[0]+(this.dir[1]*scale_divider)].color = "black";
+                blocksList[i+this.dir[0]+(this.dir[1]*scale_divider)].state += 1;
                 this.state = 0;
                 break;
             default:
@@ -141,6 +149,10 @@ class block {
         
         
     
+        }
+
+        if(this.state === 2){
+            this.color = "grey";
         }
         
 
@@ -156,10 +168,28 @@ class block {
         
         if(this.x === scale_divider-1 && x === 1 || this.x === 0 && x === -1 || this.y === 0 && y=== -1 || this.y === scale_divider-1 && y=== 1 ){
             return "edge";
+        }else if(copyblocksList[i+x+(y*scale_divider)].state === 1){
+            return "ant";
         }else{
             return copyblocksList[i+x+(y*scale_divider)].color ;
         }
         
+    }
+
+    rotate = function(dirR){
+
+        if(dirR){
+            let y = -this.dir[1];
+            let x = this.dir[0];
+            this.dir[1] = x;
+            this.dir[0] = y;
+        }else{
+            let y = this.dir[1];
+            let x = -this.dir[0];
+            this.dir[1] = x;
+            this.dir[0] = y;
+        }
+    
     
     }
 
@@ -241,24 +271,6 @@ ctx.lineWidth = 1;
 }
 
 
-function rotate(dirR){
-
-    if(dirR){
-        let y = -dir[1];
-        let x = dir[0];
-        dir[1] = x;
-        dir[0] = y;
-    }else{
-        let y = dir[1];
-        let x = -dir[0];
-        dir[1] = x;
-        dir[0] = y;
-    }
-
-
-}
-
-
 
 // create block
 
@@ -308,7 +320,15 @@ function pausegame(){
         document.getElementsByClassName("pause")[0].style.display = "none";}
 }
 
+//toggle style
 
+function togglestyle(){
+    if (styleblock === true){
+        styleblock = false ;
+    }else{
+        styleblock = true;}
+
+}
 
 // toggle grid
 
